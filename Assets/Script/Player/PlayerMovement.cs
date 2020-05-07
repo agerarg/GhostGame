@@ -1,12 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public PossessObjectBox PossesBox;
+    public bool mouseOverSomeThing;
     private NavMeshAgent agent;
     private bool allowToMove = true;
     private float playerHeigth = 5.18f;
@@ -18,18 +17,23 @@ public class PlayerMovement : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         allowToMove = true;
     }
+    public void Stop()
+    {
+        agent.isStopped = true;
+    }
     public Transform GetTransform()
     {
         return transform;
     }
     public void SetPositionTo(Vector3 newPos)
     {
+
         //newPos.y = transform.position.y;
         //agent.Warp(newPos);
     }
     public void PossesionCooldown()
     {
-        possessionCooldown = 3f;
+        possessionCooldown = 1f;
     }
     public void AllowMoving(bool set)
     {
@@ -37,16 +41,14 @@ public class PlayerMovement : MonoBehaviour
     }
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && possessionCooldown <= 0)
+        if (Input.GetMouseButtonDown(0) && possessionCooldown <= 0 && !mouseOverSomeThing)
         {
 
             if (!allowToMove)
             {
-                if (!PossesBox.mouse_over)
-                {
                     playerPos.StopPosses();
                     allowToMove = true;
-                }
+                    agent.isStopped = false;
             }
             else
             {

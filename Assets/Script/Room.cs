@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Room : MonoBehaviour
 {
-    public int setRoom=4;
+    public int setRoom=0;
     public int[] adjacentRooms;
     void Start()
     {
@@ -40,13 +40,15 @@ public class Room : MonoBehaviour
     {
         EnemyMovement[] Enemys = FindObjectsOfType<EnemyMovement>();
 
-        int rnd = Random.Range(0, adjacentRooms.Length);
-        int roomToRun = adjacentRooms[rnd];
+        int rnd = 0;
+        int roomToRun = 0;
 
         for (int i = 0; i < Enemys.Length; i++)
         {
              if (Enemys[i].room == setRoom)
                 {
+                    rnd = Random.Range(0, adjacentRooms.Length);
+                    roomToRun = adjacentRooms[rnd];
                     Enemys[i].AtractToRoom(roomToRun);
                 }
         }
@@ -67,8 +69,12 @@ public class Room : MonoBehaviour
         }
         if(pplOnRoom==1)
         {
+            GtfoFromThere();
             AloneInRoom.GetScared();
         }
+
+        
+
     }
 
 }

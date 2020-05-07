@@ -5,33 +5,34 @@ using UnityEngine;
 public class TriggerObject : MonoBehaviour
 {
     public Room roomBelong;
+    public Transform FixPosition;
     private bool isPosses = false;
     private Vector3 originPosition;
     private Quaternion originRotation;
     private float shake_decay = 0.002f;
     private float temp_shake_intensity = 0;
 
+    void Start()
+    {
+        originPosition = transform.position;
+        originRotation = transform.rotation;
+    }
+
     public Vector3 ObjectPosition()
     {
-        return transform.position;
+        return FixPosition.position;
     }
 
     public void Spooke()
     {
-        originPosition = transform.position;
-        originRotation = transform.rotation;
         temp_shake_intensity = 0.1f;
     }
     public void Sound()
     {
-        originPosition = transform.position;
-        originRotation = transform.rotation;
         temp_shake_intensity = 0.1f;
     }
     public void Scare()
     {
-        originPosition = transform.position;
-        originRotation = transform.rotation;
         temp_shake_intensity = 0.3f;
     }
     void Update()
@@ -57,6 +58,9 @@ public class TriggerObject : MonoBehaviour
     public void DesPosses()
     {
         isPosses = false;
+        temp_shake_intensity = 0;
+        transform.position = originPosition;
+        transform.rotation = originRotation;
     }
     void OnMouseDown()
     {
@@ -67,6 +71,7 @@ public class TriggerObject : MonoBehaviour
 
             if (roomBelong.setRoom == playerPos.room)
             {
+                player.Stop();
                 playerPos.PossesOject(player, this);
             }
             else

@@ -8,8 +8,12 @@ public class PlayerPoses : MonoBehaviour, IRoomSet
     public int room = 0;
     private TriggerObject possesedObject;
     private bool thingIsPosses=false;
+    private bool isAlreadySacredRecently = false;
+    private float scareSpamStop = 0;
+    AudioSource audioSource;
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         MyBody.SetActive(true);
     }
     public void setRoom(int num)
@@ -34,10 +38,15 @@ public class PlayerPoses : MonoBehaviour, IRoomSet
     }
     public void MakeScare()
     {
-        if (possesedObject != null)
+        if (!isAlreadySacredRecently)
         {
-            possesedObject.Scare();
-            possesedObject.roomBelong.Scare();
+            scareSpamStop = 3f;
+            isAlreadySacredRecently = true;
+            if (possesedObject != null)
+            {
+                possesedObject.Scare();
+                possesedObject.roomBelong.Scare();
+            }
         }
     }
     public bool PossesOject(PlayerMovement player, TriggerObject obj)
@@ -48,13 +57,12 @@ public class PlayerPoses : MonoBehaviour, IRoomSet
             player.PossesionCooldown();
 
            player.SetPositionTo(obj.ObjectPosition());
-
+            audioSource.Play();
             possesedObject = obj;
             MyBody.SetActive(false);
             obj.Posses();
             thingIsPosses = true;
-            Debug.Log("Posses Succed");
-            WindowManager.instance.SetPossessionOptions(true);
+            WindowManager.instance.SetPossessionOptions(true, obj.ObjectPosition());
             return true;
         }
 
@@ -62,14 +70,21 @@ public class PlayerPoses : MonoBehaviour, IRoomSet
     }
     public void StopPosses()
     {
-
         MyBody.SetActive(true);
         if(possesedObject!=null)
           possesedObject.DesPosses();
         Debug.Log("Player quit of possesing!");
         thingIsPosses = false;
         possesedObject = null;
-        WindowManager.instance.SetPossessionOptions(false);
+        WindowManager.instance.SetPossessionOptions(false , new Vector3(0,0,0));
     }
-  
+  void Update()
+    {
+        if(isAlreadySacredRecently)
+        {
+            scareSpamStop -= Time.deltaTime;
+            if (scareSpamStop <= 0)
+                isAlreadySacredRecently = false;
+        }
+    }
 }

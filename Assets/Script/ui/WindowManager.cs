@@ -18,8 +18,9 @@ public class WindowManager : MonoBehaviour
         possessionOptions.SetActive(false);
     }
 
-   public void SetPossessionOptions(bool set)
+   public void SetPossessionOptions(bool set,Vector3 pos)
     {
         possessionOptions.SetActive(set);
+        possessionOptions.transform.position = Camera.main.WorldToScreenPoint(pos);
     }
 }

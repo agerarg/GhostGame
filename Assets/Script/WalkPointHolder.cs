@@ -6,6 +6,7 @@ public class WalkPointHolder : MonoBehaviour
 {
     public static WalkPointHolder instance;
      public WalkPoint[] WalkPointers;
+    public Transform goAway;
     void Awake()
     {
         instance = this;
@@ -29,5 +30,9 @@ public class WalkPointHolder : MonoBehaviour
         }
         int rnd = Random.Range(0, FilterWalkPointers.Count);
         return FilterWalkPointers[rnd].GetPointTransform();
+    }
+    public Transform GTFO()
+    {
+        return goAway;
     }
 }

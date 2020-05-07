@@ -5,14 +5,19 @@ using UnityEngine.EventSystems;
 
 public class PossessObjectBox : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public bool mouse_over;
+    private PlayerMovement player;
+    void Start()
+    {
+        player = (PlayerMovement)FindObjectOfType(typeof(PlayerMovement));
+    }
+
     public void OnPointerEnter(PointerEventData eventData)
     {
-        mouse_over = true;
+        player.mouseOverSomeThing = true;
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        mouse_over = false;
+        player.mouseOverSomeThing = false;
     }
 }
