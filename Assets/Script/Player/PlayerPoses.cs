@@ -2,21 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerPoses : MonoBehaviour
+public class PlayerPoses : MonoBehaviour, IRoomSet
 {
     public GameObject MyBody;
+    public int room = 0;
     private TriggerObject possesedObject;
     private bool thingIsPosses=false;
     void Start()
     {
         MyBody.SetActive(true);
     }
-
+    public void setRoom(int num)
+    {
+        room = num;
+    }
     public void MakeSound()
     {
         if(possesedObject != null)
         {
             possesedObject.Sound();
+            possesedObject.roomBelong.AtractIfSomeoneThere();
         }
     }
     public void MakeSpooke()
@@ -24,6 +29,7 @@ public class PlayerPoses : MonoBehaviour
         if (possesedObject != null)
         {
             possesedObject.Spooke();
+            possesedObject.roomBelong.GtfoFromThere();
         }
     }
     public void MakeScare()
@@ -31,6 +37,7 @@ public class PlayerPoses : MonoBehaviour
         if (possesedObject != null)
         {
             possesedObject.Scare();
+            possesedObject.roomBelong.Scare();
         }
     }
     public bool PossesOject(PlayerMovement player, TriggerObject obj)
@@ -64,5 +71,5 @@ public class PlayerPoses : MonoBehaviour
         possesedObject = null;
         WindowManager.instance.SetPossessionOptions(false);
     }
-    
+  
 }

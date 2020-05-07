@@ -5,18 +5,29 @@ using UnityEngine;
 public class WalkPointHolder : MonoBehaviour
 {
     public static WalkPointHolder instance;
-    public Transform[] WalkPointers;
+     public WalkPoint[] WalkPointers;
     void Awake()
     {
         instance = this;
+        WalkPointers = FindObjectsOfType<WalkPoint>();
     }
-    public Transform[] GetAllWalkPoints()
-    {
-        return WalkPointers;
-    }
+    
     public Transform GetRandomPoint()
     {
         int rnd = Random.Range(0, WalkPointers.Length);
-        return WalkPointers[rnd];
+        return WalkPointers[rnd].GetPointTransform();
+    }
+    public Transform GetRandomPointFromRoom(int idRoom)
+    {
+        List<WalkPoint> FilterWalkPointers = new List<WalkPoint>();
+        for (int i = 0; i < WalkPointers.Length; i++)
+        {
+            if(WalkPointers[i].RoomId== idRoom)
+            {
+                FilterWalkPointers.Add(WalkPointers[i]);
+            }
+        }
+        int rnd = Random.Range(0, FilterWalkPointers.Count);
+        return FilterWalkPointers[rnd].GetPointTransform();
     }
 }

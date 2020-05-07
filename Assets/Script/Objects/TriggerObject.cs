@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class TriggerObject : MonoBehaviour
 {
+    public Room roomBelong;
     private bool isPosses = false;
-
     private Vector3 originPosition;
     private Quaternion originRotation;
     private float shake_decay = 0.002f;
@@ -57,17 +57,22 @@ public class TriggerObject : MonoBehaviour
     public void DesPosses()
     {
         isPosses = false;
-        Debug.Log("Obj Despossesed!");
     }
     void OnMouseDown()
     {
         if (!isPosses)
         {
             PlayerMovement player = (PlayerMovement)FindObjectOfType(typeof(PlayerMovement));
-
             PlayerPoses playerPos = (PlayerPoses)FindObjectOfType(typeof(PlayerPoses));
-            playerPos.PossesOject(player, this);
 
+            if (roomBelong.setRoom == playerPos.room)
+            {
+                playerPos.PossesOject(player, this);
+            }
+            else
+            {
+                Debug.Log("Your in other room");
+            }
            
         }
     }

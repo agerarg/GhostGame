@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class WalkPoint : MonoBehaviour
 {
-    // Start is called before the first frame update
+    public int RoomId=0;
+   
     void Start()
     {
-        
+        if(RoomId==0)
+        {
+            Debug.Log("Room with id 0!");
+        }
+    }
+    public Transform GetPointTransform()
+    {
+        return transform;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
